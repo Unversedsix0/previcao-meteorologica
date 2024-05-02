@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="https://openlayers.org/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Using OpenLayers with Vite</title>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script type="module" src="./main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="https://openlayers.org/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Previsão Meteorológica</title>
+</head>
+
+<body>
+  <div id="card">
+    <p id="cidade-nome"></p>
+    <p id="date"></p>
+    <p id="temperatura"></p>
+    <p id="temperatura-max"></p>
+    <p id="temperatura-min"></p>
+    <p id="clima-atual"></p>
+    <p id="probabilidade-chuva"></p>
+    <p id="fase-lua"></p>
+  </div>
+  <div id="map"></div>
+  <div id="footer">
+    <form id="consulta">
+      <input type="text" id="cidade">
+      <button type="submit">Consultar</button>
+    </form>
+    <select name="consultas" id="consultas">
+    </select>
+
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+
 </html>
