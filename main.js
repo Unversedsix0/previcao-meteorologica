@@ -15,6 +15,8 @@ const temperatura_min = document.querySelector("#temperatura-min");
 const clima_atual = document.querySelector("#clima-atual");
 const probabilidade_chuva = document.querySelector("#probabilidade-chuva");
 const fase_lua = document.querySelector("#fase-lua");
+const select = document.getElementById("storedQueries");
+
 document
   .getElementById("consulta")
   .addEventListener("submit", function (event) {
@@ -42,12 +44,21 @@ document.addEventListener("DOMContentLoaded", function () {
   atualizaSelect();
 });
 
+select.addEventListener("change", function (event) {
+  
+  var selectedValue = event.target.value;
+  carregaDados(selectedValue);
+  console.log("Opção selecionada:", selectedValue);
+});
+
 const atualizaCard = (data) => {
   cidade_nome.textContent = "Cidade:" + data.city_name;
   date.textContent = data.date;
   temperatura.textContent = "Temperatura:" + data.temp;
-  temperatura_max.textContent = "Temperatura Máx.:" + data.forecast[0].max;
-  temperatura_min.textContent = "Temperatura Min.:" + data.forecast[0].min;
+  temperatura_max.textContent =
+    "Temperatura Máx.:" + data.forecast[0].max + "°C";
+  temperatura_min.textContent =
+    "Temperatura Min.:" + data.forecast[0].min + "°C";
   clima_atual.textContent = data.description;
   probabilidade_chuva.textContent =
     "Probabilidade de Chuva:" + data.forecast[0].rain_probability + "%";
@@ -99,35 +110,24 @@ const realizaConsultas = async () => {
 };
 
 const armazenaConsulta = (dados) => {
-  let storedData = localStorage.getItem("storedQueries");
+  let storedData = JSON.parse(localStorage.getItem("storedQueries"));
   let jsonArray;
 
-  if (storedData) {
-    jsonArray = JSON.parse(storedData);
-  } else {
-    jsonArray = [];
-  }
 
-  jsonArray.push(dados);
+  storedData.push(dados);
 
-  let updatedData = JSON.stringify(jsonArray);
+  let updatedData = JSON.stringify(storedData);
 
   localStorage.setItem("storedQueries", updatedData);
   atualizaSelect();
 };
 
  const atualizaSelect = () =>{
-  const select = document.getElementById("storedQueries");
-  let storedData = localStorage.getItem("storedQueries");
-
- 
-  let jsonArray = storedData ? JSON.parse(storedData) : [];
-
- 
+  let storedData = JSON.parse(localStorage.getItem("storedQueries"));
   select.innerHTML = "";
 
 
-  jsonArray.forEach((item) => {
+  storedData.forEach((item) => {
     const option = document.createElement("option");
     option.value = item.id;
     option.textContent = item.city_name;
@@ -135,5 +135,11 @@ const armazenaConsulta = (dados) => {
   });
 };
 
+const carregaDados = (id) => {
+  let storedData = JSON.parse(localStorage.getItem("storedQueries"));
+  let selectedCity = storedData.find((obj) => obj.id === id);
+  atualizaMapa(selectedCity);
+  atualizaCard(selectedCity);
+}
 
 
